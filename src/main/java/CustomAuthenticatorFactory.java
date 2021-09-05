@@ -8,9 +8,12 @@ import org.keycloak.models.KeycloakSessionFactory;
 import org.keycloak.provider.ProviderConfigProperty;
 
 public class CustomAuthenticatorFactory implements AuthenticatorFactory {
+  private static final String CUSTOM_AUTH="Custom Authenticator";
+  private static final CustomAuthenticator customAuth= new CustomAuthenticator();
+
   @Override
   public String getDisplayType() {
-    return null;
+    return "Custom Authenticator";
   }
 
   @Override
@@ -23,14 +26,19 @@ public class CustomAuthenticatorFactory implements AuthenticatorFactory {
     return false;
   }
 
+  private static AuthenticationExecutionModel.Requirement[] REQUIREMENT_CHOICES= {
+      AuthenticationExecutionModel.Requirement.REQUIRED,
+      AuthenticationExecutionModel.Requirement.ALTERNATIVE,
+      AuthenticationExecutionModel.Requirement.DISABLED
+  };
   @Override
   public AuthenticationExecutionModel.Requirement[] getRequirementChoices() {
-    return new AuthenticationExecutionModel.Requirement[0];
+    return REQUIREMENT_CHOICES;
   }
 
   @Override
   public boolean isUserSetupAllowed() {
-    return false;
+    return true;
   }
 
   @Override
@@ -45,7 +53,7 @@ public class CustomAuthenticatorFactory implements AuthenticatorFactory {
 
   @Override
   public Authenticator create(KeycloakSession keycloakSession) {
-    return null;
+    return customAuth;
   }
 
   @Override
@@ -65,6 +73,6 @@ public class CustomAuthenticatorFactory implements AuthenticatorFactory {
 
   @Override
   public String getId() {
-    return null;
+    return CUSTOM_AUTH;
   }
 }
